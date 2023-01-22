@@ -14,6 +14,9 @@ public class MangaEntity {
     @Column(nullable = false, unique = true)
     private String mangaName;
 
+    @Column(nullable = false, unique = true)
+    private String pathName;
+
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn
     private MangaAuthorEntity author;
@@ -21,22 +24,18 @@ public class MangaEntity {
     @OneToMany(mappedBy = "manga")
     private List<VolumeEntity> volumes;
 
-    public MangaEntity(String mangaName, MangaAuthorEntity author) {
-        this.mangaName = mangaName;
-        this.author = author;
-    }
-
     public MangaEntity() { }
 
-    public MangaEntity(String mangaName, MangaAuthorEntity author, List<VolumeEntity> volumes) {
+    public MangaEntity(String mangaName, String pathName, MangaAuthorEntity author) {
         this.mangaName = mangaName;
+        this.pathName = pathName;
         this.author = author;
-        this.volumes = volumes;
     }
 
-    public MangaEntity(Long id, String mangaName, MangaAuthorEntity author, List<VolumeEntity> volumes) {
+    public MangaEntity(Long id, String mangaName, String pathName, MangaAuthorEntity author, List<VolumeEntity> volumes) {
         this.id = id;
         this.mangaName = mangaName;
+        this.pathName = pathName;
         this.author = author;
         this.volumes = volumes;
     }
@@ -47,6 +46,10 @@ public class MangaEntity {
 
     public String getMangaName() {
         return mangaName;
+    }
+
+    public String getPathName() {
+        return pathName;
     }
 
     public MangaAuthorEntity getAuthor() {
