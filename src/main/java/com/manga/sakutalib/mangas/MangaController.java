@@ -8,12 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 
 @RestController
 public class MangaController {
-    @PostMapping("/upload")
+    @PostMapping("/uploadPage")
     public ResponseEntity uploadImage(@RequestParam("file") MultipartFile file, @RequestParam String volume,
                                               @RequestParam String chapter, @RequestParam String manga) {
         try {
@@ -33,8 +32,8 @@ public class MangaController {
         }
     }
 
-    @GetMapping("/{mangaName}/{volume}/{chapter}/{page}")
-    public ResponseEntity getImage(@PathVariable String mangaName, @PathVariable String volume, @PathVariable String chapter, @PathVariable String page) throws IOException {
+    @GetMapping("/read/{mangaName}/{volume}/{chapter}/{page}")
+    public ResponseEntity getImage(@PathVariable String mangaName, @PathVariable String volume, @PathVariable String chapter, @PathVariable String page) {
         try{
             var file = new File(System.getProperty("user.home") + "/Desktop/sakuta_lib/" + mangaName + "/" + volume
                     + "/" + chapter + "/" + page);
