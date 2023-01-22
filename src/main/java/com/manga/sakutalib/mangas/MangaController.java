@@ -1,5 +1,8 @@
 package com.manga.sakutalib.mangas;
 
+import com.manga.sakutalib.mangas.requests.AddMangaRequest;
+import com.manga.sakutalib.mangas.requests.UploadMangaPageRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,22 +15,37 @@ import java.nio.file.Files;
 
 @RestController
 public class MangaController {
+    private final MangaService mangaService;
+
+    @Autowired
+    public MangaController(MangaService mangaService) {
+        this.mangaService = mangaService;
+    }
+
     @PostMapping("/uploadPage")
-    public ResponseEntity uploadImage(@RequestParam("file") MultipartFile file, @RequestParam String volume,
-                                              @RequestParam String chapter, @RequestParam String manga) {
+    public ResponseEntity uploadImage(@RequestParam("file") MultipartFile file, @RequestParam Long volumeId,
+                                      @RequestParam Long chapterId, @RequestParam Long mangaId) {
         try {
-            var path = System.getProperty("user.home") + "/Desktop/sakuta_lib/" + manga + "/" +
-                    volume + "/" + chapter + "/"  + file.getOriginalFilename();
-            var f = new File(path);
-
-            if (!f.exists()) {
-                f.getParentFile().mkdirs();
-            }
-
-            file.transferTo(f);
-
-            return ResponseEntity.ok(true);
+            return ResponseEntity.ok(mangaService.UploadMangaPage(new UploadMangaPageRequest(file, volumeId, chapterId, mangaId)));
         } catch (Exception ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @PostMapping("/manga")
+    public ResponseEntity AddManga(@RequestBody AddMangaRequest mangaRequest){
+        try{
+            return ResponseEntity.ok(mangaService.AddManga(mangaRequest));
+        }catch (Exception ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @GetMapping("/manga")
+    public ResponseEntity GetMangaByName(@RequestParam String name){
+        try{
+            return ResponseEntity.ok(mangaService.GetMangaByName(name));
+        }catch (Exception ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }

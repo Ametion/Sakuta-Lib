@@ -15,6 +15,9 @@ public class ChapterEntity {
     @Column(nullable = false)
     private String chapterName;
 
+    @Column(nullable = false)
+    private Long chapterNumber;
+
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn
     private MangaAuthorEntity author;
@@ -28,14 +31,16 @@ public class ChapterEntity {
 
     public ChapterEntity() { }
 
-    public ChapterEntity(String chapterName, MangaAuthorEntity author, VolumeEntity volume) {
+    public ChapterEntity(String chapterName, Long chapterNumber, MangaAuthorEntity author, VolumeEntity volume) {
         this.chapterName = chapterName;
+        this.chapterNumber = chapterNumber;
         this.author = author;
         this.volume = volume;
     }
 
-    public ChapterEntity(String chapterName, MangaAuthorEntity author, VolumeEntity volume, MangaPageEntity page) {
+    public ChapterEntity(String chapterName, Long chapterNumber, MangaAuthorEntity author, VolumeEntity volume, MangaPageEntity page) {
         this.chapterName = chapterName;
+        this.chapterNumber = chapterNumber;
         this.author = author;
         this.volume = volume;
         this.pages = List.of(page);
@@ -62,6 +67,10 @@ public class ChapterEntity {
 
     public String getChapterName() {
         return chapterName;
+    }
+
+    public Long getChapterNumber() {
+        return chapterNumber;
     }
 
     public MangaAuthorEntity getAuthor() {
