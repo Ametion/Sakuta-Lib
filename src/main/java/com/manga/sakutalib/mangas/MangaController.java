@@ -26,7 +26,13 @@ public class MangaController {
     public ResponseEntity uploadImage(@RequestParam("file") MultipartFile file, @RequestParam Long volumeId,
                                       @RequestParam Long chapterId, @RequestParam Long mangaId) {
         try {
-            return ResponseEntity.ok(mangaService.UploadMangaPage(new UploadMangaPageRequest(file, volumeId, chapterId, mangaId)));
+            var request = new UploadMangaPageRequest();
+            request.file = file;
+            request.mangaId = mangaId;
+            request.volumeId = volumeId;
+            request.chapterId = chapterId;
+
+            return ResponseEntity.ok(mangaService.UploadMangaPage(request));
         } catch (Exception ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
