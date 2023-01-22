@@ -19,7 +19,7 @@ public class MangaController {
         try {
             var path = System.getProperty("user.home") + "/Desktop/sakuta_lib/" + manga + "/" +
                     volume + "/" + chapter + "/"  + file.getOriginalFilename();
-            File f = new File(path);
+            var f = new File(path);
 
             if (!f.exists()) {
                 f.getParentFile().mkdirs();
@@ -36,12 +36,15 @@ public class MangaController {
     @GetMapping("/{mangaName}/{volume}/{chapter}/{page}")
     public ResponseEntity getImage(@PathVariable String mangaName, @PathVariable String volume, @PathVariable String chapter, @PathVariable String page) throws IOException {
         try{
-            File file = new File(System.getProperty("user.home") + "/Desktop/sakuta_lib/" + mangaName + "/" + volume
+            var file = new File(System.getProperty("user.home") + "/Desktop/sakuta_lib/" + mangaName + "/" + volume
                     + "/" + chapter + "/" + page);
-            byte[] imageBytes = Files.readAllBytes(file.toPath());
-            HttpHeaders headers = new HttpHeaders();
+            var imageBytes = Files.readAllBytes(file.toPath());
+
+            var headers = new HttpHeaders();
+
             headers.setContentType(MediaType.IMAGE_JPEG);
             headers.setContentLength(imageBytes.length);
+
             return new ResponseEntity(imageBytes, headers, HttpStatus.OK);
         }catch(Exception ex){
             return ResponseEntity.badRequest().body(ex.getMessage());
