@@ -37,7 +37,7 @@ public class MangaAuthorService {
         try{
             var author = authorRepository.findById(id).get();
 
-            return new MangaAuthorResponse(author.getFirstName(), author.getSecondName());
+            return new MangaAuthorResponse(author.getId(), author.getFirstName(), author.getSecondName());
         }catch (Exception ex){
             throw new Exception(ex);
         }
