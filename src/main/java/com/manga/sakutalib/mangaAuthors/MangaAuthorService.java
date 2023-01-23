@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class MangaAuthorService {
@@ -38,6 +40,23 @@ public class MangaAuthorService {
             var author = authorRepository.findById(id).get();
 
             return new MangaAuthorResponse(author.getId(), author.getFirstName(), author.getSecondName());
+        }catch (Exception ex){
+            throw new Exception(ex);
+        }
+    }
+
+    public List<MangaAuthorResponse> GetMangaAuthorsByName(String name) throws Exception {
+        try{
+            var arr = new ArrayList<MangaAuthorResponse>();
+
+            var authors = authorRepository.findByFirstName(name);
+
+            authors.forEach(a -> {
+                var author = new MangaAuthorResponse(a.getId(), a.getFirstName(), a.getSecondName());
+                arr.add(author);
+            });
+
+            return arr;
         }catch (Exception ex){
             throw new Exception(ex);
         }

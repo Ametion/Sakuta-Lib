@@ -23,10 +23,19 @@ public class MangaAuthorController {
         }
     }
 
-    @GetMapping("/author")
-    public ResponseEntity GetMangaAuthorById(@RequestParam Long id){
+    @GetMapping("/author/{id}")
+    public ResponseEntity GetMangaAuthorById(@PathVariable Long id){
         try{
             return ResponseEntity.ok(authorService.GetMangaAuthorById(id));
+        }catch(Exception ex){
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @GetMapping("/author")
+    public ResponseEntity GetMangaAuthorById(@RequestParam String name){
+        try{
+            return ResponseEntity.ok(authorService.GetMangaAuthorsByName(name));
         }catch(Exception ex){
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
