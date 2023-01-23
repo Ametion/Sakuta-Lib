@@ -56,6 +56,15 @@ public class MangaController {
         }
     }
 
+    @GetMapping("/mangas")
+    public ResponseEntity GetAllMangas(){
+        try{
+            return ResponseEntity.ok(mangaService.GetAllMangas());
+        }catch (Exception ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
     @GetMapping("/read/{mangaName}/{volume}/{chapter}/{page}")
     public ResponseEntity getImage(@PathVariable String mangaName, @PathVariable String volume, @PathVariable String chapter, @PathVariable String page) {
         try{

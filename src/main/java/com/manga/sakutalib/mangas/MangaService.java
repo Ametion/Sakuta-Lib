@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class MangaService {
@@ -71,6 +73,24 @@ public class MangaService {
             var author = new MangaAuthorResponse(manga.getAuthor().getId(), manga.getAuthor().getFirstName(), manga.getAuthor().getFirstName());
 
             return new MangaResponse(manga.getId(), manga.getMangaName(), manga.getPathName(), author);
+        }catch(Exception ex){
+            throw new Exception(ex);
+        }
+    }
+
+    public List<MangaResponse> GetAllMangas() throws Exception {
+        try{
+            var arr = new ArrayList<MangaResponse>();
+
+            var mangas = mangaRepository.findAll();
+
+            mangas.forEach(m -> {
+                var author = new MangaAuthorResponse(m.getAuthor().getId(), m.getAuthor().getFirstName(), m.getAuthor().getSecondName());
+                var mangaResponse = new MangaResponse(m.getId(), m.getMangaName(), m.getPathName(), author);
+                arr.add(mangaResponse);
+            });
+
+            return arr;
         }catch(Exception ex){
             throw new Exception(ex);
         }
