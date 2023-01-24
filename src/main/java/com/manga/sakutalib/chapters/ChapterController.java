@@ -15,7 +15,7 @@ public class ChapterController {
         this.chapterService = chapterService;
     }
 
-    @GetMapping("/chapter")
+    @GetMapping("/chapters")
     public ResponseEntity GetAllMangaChapters(@RequestParam Long mangaId){
         try{
             return ResponseEntity.ok(chapterService.GetAllMangaChapters(mangaId));
