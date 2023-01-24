@@ -4,8 +4,12 @@ import com.manga.sakutalib.database.entities.VolumeEntity;
 import com.manga.sakutalib.database.repositories.MangaRepository;
 import com.manga.sakutalib.database.repositories.VolumeRepository;
 import com.manga.sakutalib.volumes.requests.AddVolumeRequest;
+import com.manga.sakutalib.volumes.responses.VolumeResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class VolumeService {
@@ -27,6 +31,20 @@ public class VolumeService {
             volumeRepository.save(volume);
 
             return true;
+        }catch (Exception ex){
+            throw new Exception(ex);
+        }
+    }
+
+    public List<VolumeResponse> GetAllMangaVolumes(Long mangaId) throws Exception {
+        try{
+            var arr = new ArrayList<VolumeResponse>();
+
+            var volumes = volumeRepository.findAllByManga_Id(mangaId);
+
+            volumes.forEach(v -> arr.add(new VolumeResponse(v.getId(), v.getVolumeNumber(), v.getChapters().size())));
+
+            return arr;
         }catch (Exception ex){
             throw new Exception(ex);
         }

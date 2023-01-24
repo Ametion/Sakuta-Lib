@@ -3,9 +3,7 @@ package com.manga.sakutalib.volumes;
 import com.manga.sakutalib.volumes.requests.AddVolumeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class VolumeController {
@@ -25,4 +23,12 @@ public class VolumeController {
         }
     }
 
+    @GetMapping("/volumes")
+    public ResponseEntity GetAllMangaVolumes(@RequestParam Long mangaId){
+        try{
+            return ResponseEntity.ok(volumeService.GetAllMangaVolumes(mangaId));
+        }catch (Exception ex){
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
 }
