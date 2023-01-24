@@ -46,22 +46,4 @@ public class MangaController {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
-
-    @GetMapping("/read/{mangaName}/{volume}/{chapter}/{page}")
-    public ResponseEntity getImage(@PathVariable String mangaName, @PathVariable String volume, @PathVariable String chapter, @PathVariable String page) {
-        try{
-            var file = new File(System.getProperty("user.home") + "/Desktop/sakuta_lib/" + mangaName + "/" + volume
-                    + "/" + chapter + "/" + page);
-            var imageBytes = Files.readAllBytes(file.toPath());
-
-            var headers = new HttpHeaders();
-
-            headers.setContentType(MediaType.IMAGE_JPEG);
-            headers.setContentLength(imageBytes.length);
-
-            return new ResponseEntity(imageBytes, headers, HttpStatus.OK);
-        }catch(Exception ex){
-            return ResponseEntity.badRequest().body(ex.getMessage());
-        }
-    }
 }
