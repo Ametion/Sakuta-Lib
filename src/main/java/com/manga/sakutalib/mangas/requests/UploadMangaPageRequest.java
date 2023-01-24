@@ -7,4 +7,5 @@ public class UploadMangaPageRequest {
     public Long volumeId;
     public Long chapterId;
     public Long mangaId;
+    public Integer pageNumber;
 }

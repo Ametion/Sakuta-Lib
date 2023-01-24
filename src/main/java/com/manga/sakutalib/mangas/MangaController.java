@@ -1,14 +1,12 @@
 package com.manga.sakutalib.mangas;
 
 import com.manga.sakutalib.mangas.requests.AddMangaRequest;
-import com.manga.sakutalib.mangas.requests.UploadMangaPageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -20,22 +18,6 @@ public class MangaController {
     @Autowired
     public MangaController(MangaService mangaService) {
         this.mangaService = mangaService;
-    }
-
-    @PostMapping("/uploadPage")
-    public ResponseEntity uploadImage(@RequestParam("file") MultipartFile file, @RequestParam Long volumeId,
-                                      @RequestParam Long chapterId, @RequestParam Long mangaId) {
-        try {
-            var request = new UploadMangaPageRequest();
-            request.file = file;
-            request.mangaId = mangaId;
-            request.volumeId = volumeId;
-            request.chapterId = chapterId;
-
-            return ResponseEntity.ok(mangaService.UploadMangaPage(request));
-        } catch (Exception ex) {
-            return ResponseEntity.badRequest().body(ex.getMessage());
-        }
     }
 
     @PostMapping("/manga")

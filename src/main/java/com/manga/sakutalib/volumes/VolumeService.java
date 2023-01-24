@@ -8,6 +8,7 @@ import com.manga.sakutalib.volumes.responses.VolumeResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,9 @@ public class VolumeService {
             var volume = new VolumeEntity(volumeRequest.volumeNumber, manga);
 
             volumeRepository.save(volume);
+
+            var path = System.getProperty("user.home") + "/Desktop/sakuta_lib/" + manga.getPathName() + "/" + volumeRequest.volumeNumber;
+            var f = new File(path).mkdirs();
 
             return true;
         }catch (Exception ex){

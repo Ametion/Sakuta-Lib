@@ -10,6 +10,7 @@ import com.manga.sakutalib.mangaAuthors.responses.MangaAuthorResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -62,6 +63,9 @@ public class ChapterService {
             volume.setChapters(oldChapters);
 
             volumeRepository.save(volume);
+
+            var path = System.getProperty("user.home") + "/Desktop/sakuta_lib/" + volume.getManga().getPathName() + "/" + volume.getVolumeNumber() + "/" + chapterRequest.chapterNumber;
+            var f = new File(path).mkdirs();
 
             return true;
         }catch(Exception ex){
