@@ -11,8 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -34,12 +35,20 @@ public class ChapterService {
 
             var chapters = chapterRepository.findAllByVolumeMangaId(mangaId);
 
-            chapters.forEach(c -> {
+            var inputFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+            var outputFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+            for (var c : chapters) {
+                var date = inputFormat.parse(c.getDateAdded());
+
                 var author = c.getAuthor();
                 var authorResponse = new MangaAuthorResponse(author.getId(), author.getFirstName(), author.getSecondName());
-                var chapterResponse = new ChapterResponse(c.getId(), c.getChapterName(), c.getChapterNumber(), c.getVolume().getVolumeNumber(), authorResponse);
+
+                var chapterResponse = new ChapterResponse(c.getId(), c.getChapterName(), c.getChapterNumber(), outputFormat.format(date),
+                        c.getVolume().getVolumeNumber(), authorResponse);
+
                 arr.add(chapterResponse);
-            });
+            }
 
             return arr;
         }catch(Exception ex){
@@ -52,7 +61,7 @@ public class ChapterService {
             var author = mangaAuthorRepository.findById(chapterRequest.chapterAuthorId).get();
             var volume = volumeRepository.findById(chapterRequest.chapterVolumeId).get();
 
-            var chapter = new ChapterEntity(chapterRequest.chapterName, chapterRequest.chapterNumber, author, volume);
+            var chapter = new ChapterEntity(chapterRequest.chapterName, chapterRequest.chapterNumber, new Date().toString(), author, volume);
 
             chapterRepository.save(chapter);
 

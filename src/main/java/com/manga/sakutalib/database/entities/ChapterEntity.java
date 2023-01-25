@@ -18,6 +18,9 @@ public class ChapterEntity {
     @Column(nullable = false)
     private Long chapterNumber;
 
+    @Column(nullable = false)
+    private String dateAdded;
+
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn
     private MangaAuthorEntity author;
@@ -31,31 +34,36 @@ public class ChapterEntity {
 
     public ChapterEntity() { }
 
-    public ChapterEntity(String chapterName, Long chapterNumber, MangaAuthorEntity author, VolumeEntity volume) {
+    public ChapterEntity(String chapterName, Long chapterNumber, String dateAdded, MangaAuthorEntity author, VolumeEntity volume) {
         this.chapterName = chapterName;
         this.chapterNumber = chapterNumber;
+        this.dateAdded = dateAdded;
         this.author = author;
         this.volume = volume;
     }
 
-    public ChapterEntity(String chapterName, Long chapterNumber, MangaAuthorEntity author, VolumeEntity volume, MangaPageEntity page) {
+    public ChapterEntity(String chapterName, Long chapterNumber, String dateAdded, MangaAuthorEntity author, VolumeEntity volume, MangaPageEntity page) {
         this.chapterName = chapterName;
         this.chapterNumber = chapterNumber;
+        this.dateAdded = dateAdded;
         this.author = author;
         this.volume = volume;
         this.pages = List.of(page);
     }
 
-    public ChapterEntity(String chapterName, MangaAuthorEntity author, VolumeEntity volume, Collection<MangaPageEntity> pages) {
+    public ChapterEntity(String chapterName, String dateAdded, MangaAuthorEntity author, VolumeEntity volume, Collection<MangaPageEntity> pages) {
         this.chapterName = chapterName;
+        this.dateAdded = dateAdded;
         this.author = author;
         this.volume = volume;
         this.pages = (List<MangaPageEntity>) pages;
     }
 
-    public ChapterEntity(Long id, String chapterName, MangaAuthorEntity author, VolumeEntity volume, List<MangaPageEntity> pages) {
+    public ChapterEntity(Long id, String chapterName, Long chapterNumber, String dateAdded, MangaAuthorEntity author, VolumeEntity volume, List<MangaPageEntity> pages) {
         this.id = id;
         this.chapterName = chapterName;
+        this.chapterNumber = chapterNumber;
+        this.dateAdded = dateAdded;
         this.author = author;
         this.volume = volume;
         this.pages = pages;
@@ -71,6 +79,10 @@ public class ChapterEntity {
 
     public Long getChapterNumber() {
         return chapterNumber;
+    }
+
+    public String getDateAdded() {
+        return dateAdded;
     }
 
     public MangaAuthorEntity getAuthor() {
