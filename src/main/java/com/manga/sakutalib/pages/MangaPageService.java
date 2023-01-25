@@ -5,7 +5,7 @@ import com.manga.sakutalib.database.repositories.ChapterRepository;
 import com.manga.sakutalib.database.repositories.MangaPageRepository;
 import com.manga.sakutalib.database.repositories.MangaRepository;
 import com.manga.sakutalib.database.repositories.VolumeRepository;
-import com.manga.sakutalib.mangas.requests.UploadMangaPageRequest;
+import com.manga.sakutalib.pages.requests.UploadMangaPageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

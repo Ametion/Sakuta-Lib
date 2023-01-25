@@ -17,6 +17,9 @@ public class MangaEntity {
     @Column(nullable = false, unique = true)
     private String pathName;
 
+    @Column(nullable = false)
+    private String mangaDescription;
+
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn
     private MangaAuthorEntity author;
@@ -26,9 +29,10 @@ public class MangaEntity {
 
     public MangaEntity() { }
 
-    public MangaEntity(String mangaName, String pathName, MangaAuthorEntity author) {
+    public MangaEntity(String mangaName, String pathName, String mangaDescription, MangaAuthorEntity author) {
         this.mangaName = mangaName;
         this.pathName = pathName;
+        this.mangaDescription = mangaDescription;
         this.author = author;
     }
 
@@ -50,6 +54,10 @@ public class MangaEntity {
 
     public String getPathName() {
         return pathName;
+    }
+
+    public String getMangaDescription() {
+        return mangaDescription;
     }
 
     public MangaAuthorEntity getAuthor() {

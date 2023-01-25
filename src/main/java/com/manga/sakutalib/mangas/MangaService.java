@@ -26,7 +26,9 @@ public class MangaService {
 
     public boolean AddManga(AddMangaRequest mangaRequest) throws Exception {
         try{
-            var manga = new MangaEntity(mangaRequest.mangaName, mangaRequest.mangaPathName, mangaAuthorRepository.findById(mangaRequest.authorId).get());
+            var author = mangaAuthorRepository.findById(mangaRequest.authorId).get();
+
+            var manga = new MangaEntity(mangaRequest.mangaName, mangaRequest.mangaPathName, mangaRequest.mangaDescription, author);
 
             mangaRepository.save(manga);
 
@@ -45,7 +47,7 @@ public class MangaService {
 
             var author = new MangaAuthorResponse(manga.getAuthor().getId(), manga.getAuthor().getFirstName(), manga.getAuthor().getFirstName());
 
-            return new MangaResponse(manga.getId(), manga.getMangaName(), manga.getPathName(), author);
+            return new MangaResponse(manga.getId(), manga.getMangaName(), manga.getPathName(), manga.getMangaDescription(), author);
         }catch(Exception ex){
             throw new Exception(ex);
         }
@@ -59,7 +61,7 @@ public class MangaService {
 
             mangas.forEach(m -> {
                 var author = new MangaAuthorResponse(m.getAuthor().getId(), m.getAuthor().getFirstName(), m.getAuthor().getSecondName());
-                var mangaResponse = new MangaResponse(m.getId(), m.getMangaName(), m.getPathName(), author);
+                var mangaResponse = new MangaResponse(m.getId(), m.getMangaName(), m.getPathName(), m.getMangaDescription(), author);
                 arr.add(mangaResponse);
             });
 

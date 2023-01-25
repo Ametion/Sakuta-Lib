@@ -1,4 +1,4 @@
-package com.manga.sakutalib.mangas.requests;
+package com.manga.sakutalib.pages.requests;
 
 import org.springframework.web.multipart.MultipartFile;
 

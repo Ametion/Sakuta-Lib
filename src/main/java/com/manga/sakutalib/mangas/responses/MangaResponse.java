@@ -5,13 +5,15 @@ import com.manga.sakutalib.mangaAuthors.responses.MangaAuthorResponse;
 public class MangaResponse {
     public final Long mangaId;
     public final String mangaName;
-    public final String pathName;
+    public final String mangaPathName;
+    public final String mangaDescription;
     public final MangaAuthorResponse author;
 
-    public MangaResponse(Long mangaId, String mangaName, String pathName, MangaAuthorResponse author) {
+    public MangaResponse(Long mangaId, String mangaName, String pathName, String mangaDescription, MangaAuthorResponse author) {
         this.mangaId = mangaId;
         this.mangaName = mangaName;
-        this.pathName = pathName;
+        this.mangaPathName = pathName;
+        this.mangaDescription = mangaDescription;
         this.author = author;
     }
 }

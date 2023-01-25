@@ -1,6 +1,6 @@
 package com.manga.sakutalib.pages;
 
-import com.manga.sakutalib.mangas.requests.UploadMangaPageRequest;
+import com.manga.sakutalib.pages.requests.UploadMangaPageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
