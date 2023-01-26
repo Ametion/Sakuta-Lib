@@ -4,6 +4,7 @@ import com.manga.sakutalib.database.entities.MangaEntity;
 import com.manga.sakutalib.database.repositories.GenreRepository;
 import com.manga.sakutalib.database.repositories.MangaAuthorRepository;
 import com.manga.sakutalib.database.repositories.MangaRepository;
+import com.manga.sakutalib.genres.responses.GenreResponse;
 import com.manga.sakutalib.mangaAuthors.responses.MangaAuthorResponse;
 import com.manga.sakutalib.mangas.requests.AddMangaRequest;
 import com.manga.sakutalib.mangas.responses.MangaResponse;
@@ -51,7 +52,11 @@ public class MangaService {
 
             var author = new MangaAuthorResponse(manga.getAuthor().getId(), manga.getAuthor().getFirstName(), manga.getAuthor().getFirstName());
 
-            return new MangaResponse(manga.getId(), manga.getMangaName(), manga.getPathName(), manga.getMangaDescription(), author);
+            var genreResponse = new ArrayList<GenreResponse>();
+
+            manga.getMangaGenres().forEach(g -> genreResponse.add(new GenreResponse(g.getId(), g.getGenre())));
+
+            return new MangaResponse(manga.getId(), manga.getMangaName(), manga.getPathName(), manga.getMangaDescription(), author, genreResponse);
         }catch(Exception ex){
             throw new Exception(ex);
         }
@@ -65,7 +70,11 @@ public class MangaService {
 
             mangas.forEach(m -> {
                 var author = new MangaAuthorResponse(m.getAuthor().getId(), m.getAuthor().getFirstName(), m.getAuthor().getSecondName());
-                var mangaResponse = new MangaResponse(m.getId(), m.getMangaName(), m.getPathName(), m.getMangaDescription(), author);
+                var genreResponse = new ArrayList<GenreResponse>();
+
+                m.getMangaGenres().forEach(g -> genreResponse.add(new GenreResponse(g.getId(), g.getGenre())));
+
+                var mangaResponse = new MangaResponse(m.getId(), m.getMangaName(), m.getPathName(), m.getMangaDescription(), author, genreResponse);
                 arr.add(mangaResponse);
             });
 
