@@ -1,6 +1,7 @@
 package com.manga.sakutalib.mangas;
 
 import com.manga.sakutalib.database.entities.MangaEntity;
+import com.manga.sakutalib.database.repositories.GenreRepository;
 import com.manga.sakutalib.database.repositories.MangaAuthorRepository;
 import com.manga.sakutalib.database.repositories.MangaRepository;
 import com.manga.sakutalib.mangaAuthors.responses.MangaAuthorResponse;
@@ -17,18 +18,21 @@ import java.util.List;
 public class MangaService {
     private final MangaRepository mangaRepository;
     private final MangaAuthorRepository mangaAuthorRepository;
+    private final GenreRepository genreRepository;
 
     @Autowired
-    public MangaService(MangaRepository mangaRepository, MangaAuthorRepository mangaAuthorRepository) {
+    public MangaService(MangaRepository mangaRepository, MangaAuthorRepository mangaAuthorRepository, GenreRepository genreRepository) {
         this.mangaRepository = mangaRepository;
         this.mangaAuthorRepository = mangaAuthorRepository;
+        this.genreRepository = genreRepository;
     }
 
     public boolean AddManga(AddMangaRequest mangaRequest) throws Exception {
         try{
             var author = mangaAuthorRepository.findById(mangaRequest.authorId).get();
+            var genres = genreRepository.findByIdIn(mangaRequest.genresId);
 
-            var manga = new MangaEntity(mangaRequest.mangaName, mangaRequest.mangaPathName, mangaRequest.mangaDescription, author);
+            var manga = new MangaEntity(mangaRequest.mangaName, mangaRequest.mangaPathName, mangaRequest.mangaDescription, author, genres);
 
             mangaRepository.save(manga);
 
