@@ -1,5 +1,6 @@
 package com.manga.sakutalib.accounts;
 
+import com.manga.sakutalib.accounts.requests.EditFavouriteMangaRequest;
 import com.manga.sakutalib.accounts.requests.LoginAccountRequest;
 import com.manga.sakutalib.accounts.requests.RegisterAccountRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,4 +35,14 @@ public class AccountController {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
+
+    @PostMapping("/favouriteManga")
+    public ResponseEntity EditFavouriteManga(@RequestBody EditFavouriteMangaRequest favouriteMangaRequest) {
+        try{
+            return ResponseEntity.ok(accountsService.EditFavouriteManga(favouriteMangaRequest));
+        }catch(Exception ex){
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
 }

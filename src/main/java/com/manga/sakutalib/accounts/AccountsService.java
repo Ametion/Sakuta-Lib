@@ -1,8 +1,10 @@
 package com.manga.sakutalib.accounts;
 
+import com.manga.sakutalib.accounts.requests.EditFavouriteMangaRequest;
 import com.manga.sakutalib.accounts.requests.LoginAccountRequest;
 import com.manga.sakutalib.accounts.requests.RegisterAccountRequest;
 import com.manga.sakutalib.database.entities.UserEntity;
+import com.manga.sakutalib.database.repositories.MangaRepository;
 import com.manga.sakutalib.database.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,10 +12,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountsService {
     private final UserRepository userRepository;
+    private final MangaRepository mangaRepository;
 
     @Autowired
-    public AccountsService(UserRepository userRepository) {
+    public AccountsService(UserRepository userRepository, MangaRepository mangaRepository) {
         this.userRepository = userRepository;
+        this.mangaRepository = mangaRepository;
     }
 
     public boolean RegisterAccount(RegisterAccountRequest registerAccountRequest) throws Exception {
@@ -43,6 +47,35 @@ public class AccountsService {
             }
 
             return user.getPassword().equals(loginAccountRequest.password);
+        }catch(Exception ex){
+            throw new Exception(ex);
+        }
+    }
+
+    public boolean EditFavouriteManga(EditFavouriteMangaRequest favouriteMangaRequest) throws Exception {
+        try{
+            var manga = mangaRepository.findById(favouriteMangaRequest.mangaId).get();
+
+            var user = userRepository.findByLogin(favouriteMangaRequest.userLogin);
+
+            var newFavourites = user.getFavouriteMangas();
+
+            if(newFavourites.contains(manga)){
+                newFavourites.remove(manga);
+                user.setFavouriteMangas(newFavourites);
+
+                userRepository.save(user);
+
+                return false;
+            }
+
+            newFavourites.add(manga);
+
+            user.setFavouriteMangas(newFavourites);
+
+            userRepository.save(user);
+
+            return true;
         }catch(Exception ex){
             throw new Exception(ex);
         }

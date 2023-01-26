@@ -85,4 +85,12 @@ public class UserEntity {
     public String getPassword() {
         return password;
     }
+
+    public Set<MangaEntity> getFavouriteMangas() {
+        return favouriteMangas;
+    }
+
+    public void setFavouriteMangas(Set<MangaEntity> favouriteMangas) {
+        this.favouriteMangas = favouriteMangas;
+    }
 }
