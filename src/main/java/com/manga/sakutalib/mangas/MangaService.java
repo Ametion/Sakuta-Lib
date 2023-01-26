@@ -75,7 +75,7 @@ public class MangaService {
 
                 m.getMangaGenres().forEach(g -> genreResponse.add(new GenreResponse(g.getId(), g.getGenre())));
 
-                var mangaResponse = new MangaResponse(m.getId(), m.getMangaName(), m.getPathName(), m.getMangaDescription(), author, genreResponse);
+                var mangaResponse = new MangaResponse(m.getId(), m.getMangaName(), m.getPathName(), "", author, genreResponse);
                 arr.add(mangaResponse);
             });
 
