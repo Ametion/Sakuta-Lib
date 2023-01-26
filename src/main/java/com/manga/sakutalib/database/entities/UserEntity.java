@@ -26,6 +26,13 @@ public class UserEntity {
 
     public UserEntity() { }
 
+    public UserEntity(String firstName, String secondName, String login, String password) {
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.login = login;
+        this.password = password;
+    }
+
     public UserEntity(String firstName, String secondName, String nickName, String login, String password) {
         this.firstName = firstName;
         this.secondName = secondName;
