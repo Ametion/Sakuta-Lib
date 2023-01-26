@@ -34,6 +34,9 @@ public class MangaEntity {
     @OneToMany(mappedBy = "manga")
     private List<VolumeEntity> volumes;
 
+    @ManyToMany(mappedBy = "favouriteMangas")
+    private Set<UserEntity> usersFavourites;
+
     public MangaEntity() { }
 
     public MangaEntity(String mangaName, String pathName, String mangaDescription, MangaAuthorEntity author, Set<GenreEntity> mangaGenres) {

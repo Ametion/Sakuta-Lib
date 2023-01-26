@@ -2,6 +2,8 @@ package com.manga.sakutalib.database.entities;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "users")
 public class UserEntity {
@@ -23,6 +25,12 @@ public class UserEntity {
 
     @Column(nullable = false)
     private String password;
+
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    @JoinTable(name = "favourite_mangas_user",
+    joinColumns = @JoinColumn(name = "user_id"),
+    inverseJoinColumns = @JoinColumn(name = "manga_id"))
+    private Set<MangaEntity> favouriteMangas;
 
     public UserEntity() { }
 
