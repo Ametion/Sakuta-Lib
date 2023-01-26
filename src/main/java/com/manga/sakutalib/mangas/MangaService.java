@@ -4,6 +4,7 @@ import com.manga.sakutalib.database.entities.MangaEntity;
 import com.manga.sakutalib.database.repositories.GenreRepository;
 import com.manga.sakutalib.database.repositories.MangaAuthorRepository;
 import com.manga.sakutalib.database.repositories.MangaRepository;
+import com.manga.sakutalib.database.entities.GenreEntity;
 import com.manga.sakutalib.genres.responses.GenreResponse;
 import com.manga.sakutalib.mangaAuthors.responses.MangaAuthorResponse;
 import com.manga.sakutalib.mangas.requests.AddMangaRequest;
@@ -76,6 +77,44 @@ public class MangaService {
 
                 var mangaResponse = new MangaResponse(m.getId(), m.getMangaName(), m.getPathName(), m.getMangaDescription(), author, genreResponse);
                 arr.add(mangaResponse);
+            });
+
+            return arr;
+        }catch(Exception ex){
+            throw new Exception(ex);
+        }
+    }
+
+    public List<MangaResponse> GetMangasByGenres(List<Long> genresId) throws Exception {
+        try{
+            var arr = new ArrayList<MangaResponse>();
+
+            var mangas = mangaRepository.findAll();
+
+            mangas.forEach(m -> {
+                var allGenres = true;
+
+                var mangaGenreIds = new ArrayList<>();
+
+                for (var genre : m.getMangaGenres()) {
+                    mangaGenreIds.add(genre.getId());
+                }
+
+                for (var genreId : genresId) {
+                    if (!mangaGenreIds.contains(genreId)) {
+                        allGenres = false;
+                        break;
+                    }
+                }
+                if (allGenres) {
+                    var author = new MangaAuthorResponse(m.getAuthor().getId(), m.getAuthor().getFirstName(), m.getAuthor().getSecondName());
+
+                    var genreResponse = new ArrayList<GenreResponse>();
+
+                    m.getMangaGenres().forEach(g -> genreResponse.add(new GenreResponse(g.getId(), g.getGenre())));
+
+                    arr.add(new MangaResponse(m.getId(), m.getMangaName(), m.getPathName(), m.getMangaDescription(), author, genreResponse));
+                }
             });
 
             return arr;

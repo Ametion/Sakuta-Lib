@@ -2,14 +2,10 @@ package com.manga.sakutalib.mangas;
 
 import com.manga.sakutalib.mangas.requests.AddMangaRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
-import java.nio.file.Files;
+import java.util.List;
 
 @RestController
 public class MangaController {
@@ -42,6 +38,15 @@ public class MangaController {
     public ResponseEntity GetAllMangas(){
         try{
             return ResponseEntity.ok(mangaService.GetAllMangas());
+        }catch (Exception ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @GetMapping("/mangas/genres")
+    public ResponseEntity GetMangasByGenres(@RequestParam List<Long> genresId) {
+        try{
+            return ResponseEntity.ok(mangaService.GetMangasByGenres(genresId));
         }catch (Exception ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
