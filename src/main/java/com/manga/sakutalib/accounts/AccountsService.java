@@ -6,8 +6,14 @@ import com.manga.sakutalib.accounts.requests.RegisterAccountRequest;
 import com.manga.sakutalib.database.entities.UserEntity;
 import com.manga.sakutalib.database.repositories.MangaRepository;
 import com.manga.sakutalib.database.repositories.UserRepository;
+import com.manga.sakutalib.genres.responses.GenreResponse;
+import com.manga.sakutalib.mangaAuthors.responses.MangaAuthorResponse;
+import com.manga.sakutalib.mangas.responses.MangaResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AccountsService {
@@ -76,6 +82,28 @@ public class AccountsService {
             userRepository.save(user);
 
             return true;
+        }catch(Exception ex){
+            throw new Exception(ex);
+        }
+    }
+    
+    public List<MangaResponse> GetFavouriteManga(String userLogin) throws Exception {
+        try{
+            var arr = new ArrayList<MangaResponse>();
+            
+            var user = userRepository.findByLogin(userLogin);
+            
+            user.getFavouriteMangas().forEach(m -> {
+                var author = new MangaAuthorResponse(m.getAuthor().getId(), m.getAuthor().getFirstName(), m.getAuthor().getSecondName());
+
+                var genreResponse = new ArrayList<GenreResponse>();
+
+                m.getMangaGenres().forEach(g -> genreResponse.add(new GenreResponse(g.getId(), g.getGenre())));
+
+                arr.add(new MangaResponse(m.getId(), m.getMangaName(), m.getPathName(), "", author, genreResponse));
+            });
+            
+            return arr;
         }catch(Exception ex){
             throw new Exception(ex);
         }

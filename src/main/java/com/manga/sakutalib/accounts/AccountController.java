@@ -5,9 +5,7 @@ import com.manga.sakutalib.accounts.requests.LoginAccountRequest;
 import com.manga.sakutalib.accounts.requests.RegisterAccountRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AccountController {
@@ -40,6 +38,15 @@ public class AccountController {
     public ResponseEntity EditFavouriteManga(@RequestBody EditFavouriteMangaRequest favouriteMangaRequest) {
         try{
             return ResponseEntity.ok(accountsService.EditFavouriteManga(favouriteMangaRequest));
+        }catch(Exception ex){
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @GetMapping("/favouriteManga")
+    public ResponseEntity GetFavouriteManga(@RequestParam String userLogin) {
+        try{
+            return ResponseEntity.ok(accountsService.GetFavouriteManga(userLogin));
         }catch(Exception ex){
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
