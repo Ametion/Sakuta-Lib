@@ -45,7 +45,7 @@ public class ChapterService {
                 var authorResponse = new MangaAuthorResponse(author.getId(), author.getFirstName(), author.getSecondName());
 
                 var chapterResponse = new ChapterResponse(c.getId(), c.getChapterName(), c.getChapterNumber(), outputFormat.format(date),
-                        c.getVolume().getVolumeNumber(), authorResponse);
+                        c.getVolume().getVolumeNumber(), c.getPagesAmount(), authorResponse);
 
                 arr.add(chapterResponse);
             }

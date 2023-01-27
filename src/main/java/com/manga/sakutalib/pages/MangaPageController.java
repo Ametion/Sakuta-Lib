@@ -23,7 +23,7 @@ public class MangaPageController {
 
     @PostMapping("/uploadPage")
     public ResponseEntity UploadMangaPage(@RequestParam("file") MultipartFile file, @RequestParam Long volumeId,
-                                      @RequestParam Long chapterId, @RequestParam Long mangaId, @RequestParam Integer pageNumber) {
+                                          @RequestParam Long chapterId, @RequestParam Long mangaId, @RequestParam Integer pageNumber) {
         try {
             var request = new UploadMangaPageRequest();
             request.file = file;

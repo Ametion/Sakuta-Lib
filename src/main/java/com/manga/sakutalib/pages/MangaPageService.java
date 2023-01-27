@@ -49,6 +49,10 @@ public class MangaPageService {
             newPages.add(page);
             chapter.setPages(newPages);
 
+            chapter.setPagesAmount(chapter.getPagesAmount() + 1);
+
+            chapterRepository.save(chapter);
+
             return true;
         }catch(Exception ex){
             throw new Exception(ex);

@@ -19,6 +19,9 @@ public class ChapterEntity {
     private Long chapterNumber;
 
     @Column(nullable = false)
+    private Integer pagesAmount;
+
+    @Column(nullable = false)
     private String dateAdded;
 
     @ManyToOne(cascade = CascadeType.REMOVE)
@@ -40,6 +43,7 @@ public class ChapterEntity {
         this.dateAdded = dateAdded;
         this.author = author;
         this.volume = volume;
+        this.pagesAmount = 0;
     }
 
     public ChapterEntity(String chapterName, Long chapterNumber, String dateAdded, MangaAuthorEntity author, VolumeEntity volume, MangaPageEntity page) {
@@ -49,6 +53,7 @@ public class ChapterEntity {
         this.author = author;
         this.volume = volume;
         this.pages = List.of(page);
+        this.pagesAmount = 0;
     }
 
     public ChapterEntity(String chapterName, String dateAdded, MangaAuthorEntity author, VolumeEntity volume, Collection<MangaPageEntity> pages) {
@@ -57,12 +62,14 @@ public class ChapterEntity {
         this.author = author;
         this.volume = volume;
         this.pages = (List<MangaPageEntity>) pages;
+        this.pagesAmount = 0;
     }
 
-    public ChapterEntity(Long id, String chapterName, Long chapterNumber, String dateAdded, MangaAuthorEntity author, VolumeEntity volume, List<MangaPageEntity> pages) {
+    public ChapterEntity(Long id, String chapterName, Long chapterNumber, Integer pagesAmount, String dateAdded, MangaAuthorEntity author, VolumeEntity volume, List<MangaPageEntity> pages) {
         this.id = id;
         this.chapterName = chapterName;
         this.chapterNumber = chapterNumber;
+        this.pagesAmount = pagesAmount;
         this.dateAdded = dateAdded;
         this.author = author;
         this.volume = volume;
@@ -79,6 +86,14 @@ public class ChapterEntity {
 
     public Long getChapterNumber() {
         return chapterNumber;
+    }
+
+    public Integer getPagesAmount() {
+        return pagesAmount;
+    }
+
+    public void setPagesAmount(Integer pagesAmount) {
+        this.pagesAmount = pagesAmount;
     }
 
     public String getDateAdded() {
