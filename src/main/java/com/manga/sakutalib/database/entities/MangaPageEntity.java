@@ -2,6 +2,8 @@ package com.manga.sakutalib.database.entities;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "manga_pages")
 public class MangaPageEntity {
@@ -15,6 +17,9 @@ public class MangaPageEntity {
     @Column(nullable = false)
     private String path;
 
+    @OneToMany(mappedBy = "mangaPage")
+    private Set<MangaPageCommentEntity> comments;
+
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(nullable = false)
     private ChapterEntity chapter;
@@ -27,10 +32,11 @@ public class MangaPageEntity {
         this.chapter = chapter;
     }
 
-    public MangaPageEntity(Long id, Integer pageNumber, String path, ChapterEntity chapter) {
+    public MangaPageEntity(Long id, Integer pageNumber, String path, Set<MangaPageCommentEntity> comments, ChapterEntity chapter) {
         this.id = id;
         this.pageNumber = pageNumber;
         this.path = path;
+        this.comments = comments;
         this.chapter = chapter;
     }
 
@@ -46,6 +52,9 @@ public class MangaPageEntity {
         return path;
     }
 
+    public Set<MangaPageCommentEntity> getComments() {
+        return comments;
+    }
     public ChapterEntity getChapter() {
         return chapter;
     }

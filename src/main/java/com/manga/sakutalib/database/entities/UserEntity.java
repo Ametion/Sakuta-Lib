@@ -26,6 +26,9 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
 
+    @OneToMany(mappedBy = "author")
+    private Set<MangaPageCommentEntity> mangaPageComment;
+
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(name = "favourite_mangas_user",
     joinColumns = @JoinColumn(name = "user_id"),
@@ -41,21 +44,15 @@ public class UserEntity {
         this.password = password;
     }
 
-    public UserEntity(String firstName, String secondName, String nickName, String login, String password) {
-        this.firstName = firstName;
-        this.secondName = secondName;
-        this.nickName = nickName;
-        this.login = login;
-        this.password = password;
-    }
-
-    public UserEntity(Long id, String firstName, String secondName, String nickName, String login, String password) {
+    public UserEntity(Long id, String firstName, String secondName, String nickName, String login, String password, Set<MangaPageCommentEntity> mangaPageComment, Set<MangaEntity> favouriteMangas) {
         this.id = id;
         this.firstName = firstName;
         this.secondName = secondName;
         this.nickName = nickName;
         this.login = login;
         this.password = password;
+        this.mangaPageComment = mangaPageComment;
+        this.favouriteMangas = favouriteMangas;
     }
 
     public Long getId() {

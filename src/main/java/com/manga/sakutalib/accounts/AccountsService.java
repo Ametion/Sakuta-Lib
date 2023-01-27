@@ -92,6 +92,10 @@ public class AccountsService {
             var arr = new ArrayList<MangaResponse>();
             
             var user = userRepository.findByLogin(userLogin);
+
+            if(user == null){
+                throw new Exception("Cant find user with this login");
+            }
             
             user.getFavouriteMangas().forEach(m -> {
                 var author = new MangaAuthorResponse(m.getAuthor().getId(), m.getAuthor().getFirstName(), m.getAuthor().getSecondName());
