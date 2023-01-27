@@ -55,4 +55,13 @@ public class MangaPageController {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
+
+    @GetMapping("/comments")
+    public ResponseEntity GetAllPageCommentByPath(@RequestParam String path){
+        try{
+            return ResponseEntity.ok(mangaPageService.GetAllPageCommentByPath(path));
+        }catch (Exception ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
 }

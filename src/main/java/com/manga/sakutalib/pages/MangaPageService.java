@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class MangaPageService {
@@ -54,6 +56,20 @@ public class MangaPageService {
             chapterRepository.save(chapter);
 
             return true;
+        }catch(Exception ex){
+            throw new Exception(ex);
+        }
+    }
+
+    public List<MangaPageCommentResponse> GetAllPageCommentByPath(String path) throws Exception {
+        try{
+            var arr = new ArrayList<MangaPageCommentResponse>();
+
+            var page = mangaPageRepository.findByPath("/home/yehor/Desktop/sakuta_lib/" + path);
+
+            page.getComments().forEach(c -> arr.add(new MangaPageCommentResponse(c.getId(), c.getContent(), c.getAuthor().getLogin())));
+
+            return arr;
         }catch(Exception ex){
             throw new Exception(ex);
         }
