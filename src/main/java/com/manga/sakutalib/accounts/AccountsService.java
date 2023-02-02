@@ -38,7 +38,7 @@ public class AccountsService {
                 throw new UserAlreadyExistException("User with this login is already exist in database", registerAccountRequest.login);
             }
 
-            var user = new UserEntity(registerAccountRequest.firstName, registerAccountRequest.secondName, registerAccountRequest.login, registerAccountRequest.password);
+            UserEntity user = new UserEntity(registerAccountRequest.firstName, registerAccountRequest.secondName, registerAccountRequest.login, registerAccountRequest.password);
 
             if (registerAccountRequest.nickName != null) {
                 user.setNickName(registerAccountRequest.nickName);
@@ -56,7 +56,7 @@ public class AccountsService {
 
     public boolean LoginAccount(LoginAccountRequest loginAccountRequest) throws Exception, NoUserFoundException {
         try{
-            var user = userRepository.findByLogin(loginAccountRequest.login);
+            UserEntity user = userRepository.findByLogin(loginAccountRequest.login);
 
             if(user == null){
                 throw new NoUserFoundException("Can not find any users with this login", loginAccountRequest.login);
@@ -70,12 +70,12 @@ public class AccountsService {
 
     public boolean EditFavouriteManga(EditFavouriteMangaRequest favouriteMangaRequest) throws Exception, NoMangaFoundException, NoUserFoundException {
         try{
-            var manga = mangaRepository.findById(favouriteMangaRequest.mangaId).get();
+            MangaEntity manga = mangaRepository.findById(favouriteMangaRequest.mangaId).get();
 
-            var user = userRepository.findByLogin(favouriteMangaRequest.userLogin);
+            UserEntity user = userRepository.findByLogin(favouriteMangaRequest.userLogin);
 
             if(user == null){
-                throw new NoUserFoundException("Can not find any users with this login", favouriteMangaRequest.userLogin);
+                throw new NoUserFoundException("Can not find any users with this login ", favouriteMangaRequest.userLogin);
             }
 
             Set<MangaEntity> newFavourites = user.getFavouriteMangas();
@@ -107,7 +107,7 @@ public class AccountsService {
         try{
             List<MangaResponse> arr = new ArrayList<>();
             
-            var user = userRepository.findByLogin(userLogin);
+            UserEntity user = userRepository.findByLogin(userLogin);
 
             if(user == null){
                 throw new NoUserFoundException("Can not find any users with this login", userLogin);
