@@ -23,7 +23,7 @@ public class MangaAuthorController {
     @PostMapping("/author")
     public ResponseEntity AddAuthor(@RequestBody AddMangaAuthorRequest authorRequest){
         try{
-            return new ResponseEntity(authorService.AddAuthor(authorRequest), HttpStatus.OK);
+            return new ResponseEntity(authorService.AddAuthor(authorRequest), HttpStatus.CREATED);
         }catch(Exception ex){
             LOGGER.error("ERROR WHILE ADDING MANGA AUTHOR: \n" + ex.getMessage());
             return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
@@ -47,6 +47,7 @@ public class MangaAuthorController {
         try{
             return new ResponseEntity(authorService.GetMangaAuthorsByName(name), HttpStatus.OK);
         }catch(Exception ex){
+            LOGGER.error("ERROR WHILE GETTING AUTHOR BY NAME \n" + ex.getMessage());
             return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }

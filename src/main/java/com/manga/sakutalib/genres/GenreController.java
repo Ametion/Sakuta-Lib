@@ -25,7 +25,7 @@ public class GenreController {
     @PostMapping("/genre")
     public ResponseEntity AddGenre(@RequestBody AddGenreRequest genreRequest){
         try{
-            return new ResponseEntity(genreService.AddGenre(genreRequest), HttpStatus.OK);
+            return new ResponseEntity(genreService.AddGenre(genreRequest), HttpStatus.CREATED);
         }catch (Exception ex){
             LOGGER.error("ERROR WHILE ADDING NEW GENRE \n" + ex.getMessage());
             return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);

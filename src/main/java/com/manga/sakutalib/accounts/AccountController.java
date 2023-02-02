@@ -28,12 +28,12 @@ public class AccountController {
     @PostMapping("/register")
     public ResponseEntity RegisterAccount(@RequestBody RegisterAccountRequest registerAccountRequest){
         try{
-            return ResponseEntity.ok(accountsService.RegisterAccount(registerAccountRequest));
+            return new ResponseEntity(accountsService.RegisterAccount(registerAccountRequest), HttpStatus.CREATED);
         } catch(UserAlreadyExistException user) {
             LOGGER.warn("Try to register login which already exist: " + user.GetLogin());
             return new ResponseEntity(user.getMessage(), HttpStatus.CONFLICT);
         }catch(Exception ex){
-            LOGGER.error(ex.getMessage());
+            LOGGER.error("ERROR WHILE REGISTER ACCOUNT \n" + ex.getMessage());
             return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -41,12 +41,12 @@ public class AccountController {
     @PostMapping("/login")
     public ResponseEntity LoginAccount(@RequestBody LoginAccountRequest loginAccountRequest){
         try{
-            return ResponseEntity.ok(accountsService.LoginAccount(loginAccountRequest));
+            return new ResponseEntity(accountsService.LoginAccount(loginAccountRequest), HttpStatus.OK);
         }catch(NoUserFoundException noUser){
             LOGGER.warn("Try to use non-existed user login: " + noUser.GetLogin());
             return new ResponseEntity(noUser.getMessage(), HttpStatus.NOT_FOUND);
         } catch(Exception ex){
-            LOGGER.error(ex.getMessage());
+            LOGGER.error("ERROR WHILE LOGIN USER \n" + ex.getMessage());
             return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -54,7 +54,7 @@ public class AccountController {
     @PostMapping("/favouriteManga")
     public ResponseEntity EditFavouriteManga(@RequestBody EditFavouriteMangaRequest favouriteMangaRequest) {
         try{
-            return ResponseEntity.ok(accountsService.EditFavouriteManga(favouriteMangaRequest));
+            return new ResponseEntity(accountsService.EditFavouriteManga(favouriteMangaRequest), HttpStatus.OK);
         }catch(NoUserFoundException noUser){
             LOGGER.warn("Try to use non-existed user login: " + noUser.GetLogin());
             return new ResponseEntity(noUser.getMessage(), HttpStatus.NOT_FOUND);
@@ -62,7 +62,7 @@ public class AccountController {
             LOGGER.warn("Try to use non-existed manga, manga id: " + noManga.GetMangaId());
             return new ResponseEntity(noManga.getMessage(), HttpStatus.NOT_FOUND);
         } catch(Exception ex){
-            LOGGER.error(ex.getMessage());
+            LOGGER.error("ERROR WHILE EDITING FAVOURITE MANGA \n" + ex.getMessage());
             return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -70,12 +70,12 @@ public class AccountController {
     @GetMapping("/favouriteManga")
     public ResponseEntity GetFavouriteManga(@RequestParam String userLogin) {
         try{
-            return ResponseEntity.ok(accountsService.GetFavouriteManga(userLogin));
+            return new ResponseEntity(accountsService.GetFavouriteManga(userLogin), HttpStatus.OK);
         }catch(NoUserFoundException noUser){
             LOGGER.warn("Try to use non-existed user login: " + noUser.GetLogin());
             return new ResponseEntity(noUser.getMessage(), HttpStatus.NOT_FOUND);
         } catch(Exception ex) {
-            LOGGER.error(ex.getMessage());
+            LOGGER.error("ERROR WHILE GETTING FAVOURITE USER MANGA" + ex.getMessage());
             return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }

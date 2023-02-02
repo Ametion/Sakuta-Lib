@@ -32,7 +32,7 @@ public class ChapterController {
     @PostMapping("/chapter")
     public ResponseEntity AddChapter(@RequestBody AddChapterRequest chapterRequest){
         try{
-            return new ResponseEntity(chapterService.AddChapter(chapterRequest), HttpStatus.OK);
+            return new ResponseEntity(chapterService.AddChapter(chapterRequest), HttpStatus.CREATED);
         } catch (Exception ex) {
             LOGGER.error("ERROR WHILE ADDING CHAPTER: \n" + ex.getMessage());
             return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
