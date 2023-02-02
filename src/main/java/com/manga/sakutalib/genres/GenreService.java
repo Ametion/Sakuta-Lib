@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -33,7 +34,7 @@ public class GenreService {
 
     public List<GenreResponse> GetAllGenres() throws Exception {
         try{
-            var arr = new ArrayList<GenreResponse>();
+            List<GenreResponse> arr = new ArrayList<>();
 
             var genres = genreRepository.findAll();
 
