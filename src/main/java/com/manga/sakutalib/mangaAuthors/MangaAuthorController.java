@@ -1,12 +1,18 @@
 package com.manga.sakutalib.mangaAuthors;
 
+import com.manga.sakutalib.mangaAuthors.exceptions.NoMangaAuthorFoundException;
 import com.manga.sakutalib.mangaAuthors.requests.AddMangaAuthorRequest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class MangaAuthorController {
+    private static final Logger LOGGER = LogManager.getLogger(MangaAuthorController.class);
+
     private final MangaAuthorService authorService;
 
     @Autowired
@@ -17,27 +23,31 @@ public class MangaAuthorController {
     @PostMapping("/author")
     public ResponseEntity AddAuthor(@RequestBody AddMangaAuthorRequest authorRequest){
         try{
-            return ResponseEntity.ok(authorService.AddAuthor(authorRequest));
+            return new ResponseEntity(authorService.AddAuthor(authorRequest), HttpStatus.OK);
         }catch(Exception ex){
-            return ResponseEntity.badRequest().body(ex.getMessage());
+            LOGGER.error("ERROR WHILE ADDING MANGA AUTHOR: \n" + ex.getMessage());
+            return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/author/{id}")
     public ResponseEntity GetMangaAuthorById(@PathVariable Long id){
         try{
-            return ResponseEntity.ok(authorService.GetMangaAuthorById(id));
-        }catch(Exception ex){
-            return ResponseEntity.badRequest().body(ex.getMessage());
+            return new ResponseEntity(authorService.GetMangaAuthorById(id), HttpStatus.OK);
+        }catch (NoMangaAuthorFoundException noAuthor) {
+            LOGGER.warn("TRY TO GET NON EXISTED ID OF MANGA AUTHOR: " + noAuthor.getMangaAuthorName());
+            return new ResponseEntity(noAuthor.getMessage(), HttpStatus.NOT_FOUND);
+        } catch(Exception ex){
+            return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/author")
     public ResponseEntity GetMangaAuthorById(@RequestParam String name){
         try{
-            return ResponseEntity.ok(authorService.GetMangaAuthorsByName(name));
+            return new ResponseEntity(authorService.GetMangaAuthorsByName(name), HttpStatus.OK);
         }catch(Exception ex){
-            return ResponseEntity.badRequest().body(ex.getMessage());
+            return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

@@ -2,14 +2,14 @@ package com.manga.sakutalib.mangaAuthors;
 
 import com.manga.sakutalib.database.entities.MangaAuthorEntity;
 import com.manga.sakutalib.database.repositories.MangaAuthorRepository;
+import com.manga.sakutalib.mangaAuthors.exceptions.NoMangaAuthorFoundException;
 import com.manga.sakutalib.mangaAuthors.requests.AddMangaAuthorRequest;
 import com.manga.sakutalib.mangaAuthors.responses.MangaAuthorResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class MangaAuthorService {
@@ -23,9 +23,9 @@ public class MangaAuthorService {
     public boolean AddAuthor(AddMangaAuthorRequest authorRequest) throws Exception {
         try{
             var formatter = new SimpleDateFormat("yyyy-MM-dd");
-            var birthday = formatter.parse(authorRequest.authorBirthday);
+            Date birthday = formatter.parse(authorRequest.authorBirthday);
 
-            var author = new MangaAuthorEntity(authorRequest.authorFirstName, authorRequest.authorSecondName, birthday);
+            MangaAuthorEntity author = new MangaAuthorEntity(authorRequest.authorFirstName, authorRequest.authorSecondName, birthday);
 
             authorRepository.save(author);
 
@@ -35,21 +35,23 @@ public class MangaAuthorService {
         }
     }
 
-    public MangaAuthorResponse GetMangaAuthorById(Long id) throws Exception {
+    public MangaAuthorResponse GetMangaAuthorById(Long id) throws Exception, NoMangaAuthorFoundException {
         try{
-            var author = authorRepository.findById(id).get();
+            MangaAuthorEntity author = authorRepository.findById(id).get();
 
             return new MangaAuthorResponse(author.getId(), author.getFirstName(), author.getSecondName());
-        }catch (Exception ex){
+        }catch(NoSuchElementException noAuthor){
+            throw new NoMangaAuthorFoundException("Can not find manga with presented id", id.toString());
+        } catch (Exception ex){
             throw new Exception(ex);
         }
     }
 
     public List<MangaAuthorResponse> GetMangaAuthorsByName(String name) throws Exception {
         try{
-            var arr = new ArrayList<MangaAuthorResponse>();
+            List<MangaAuthorResponse> arr = new ArrayList<>();
 
-            var authors = authorRepository.findByFirstName(name);
+            Collection<MangaAuthorEntity> authors = authorRepository.findByFirstName(name);
 
             authors.forEach(a -> {
                 var author = new MangaAuthorResponse(a.getId(), a.getFirstName(), a.getSecondName());
