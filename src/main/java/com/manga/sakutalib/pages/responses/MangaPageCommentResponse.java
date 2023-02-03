@@ -1,4 +1,4 @@
-package com.manga.sakutalib.pages;
+package com.manga.sakutalib.pages.responses;
 
 public class MangaPageCommentResponse {
     public final Long commentId;
