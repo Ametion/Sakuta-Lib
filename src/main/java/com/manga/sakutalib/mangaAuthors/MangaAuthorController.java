@@ -38,6 +38,7 @@ public class MangaAuthorController {
             LOGGER.warn("TRY TO GET NON EXISTED ID OF MANGA AUTHOR: " + noAuthor.getMangaAuthorName());
             return new ResponseEntity(noAuthor.getMessage(), HttpStatus.NOT_FOUND);
         } catch(Exception ex){
+            LOGGER.error("ERROR WHILE GETTING MANGA AUTHOR BY id: " + id + "\n" + ex.getMessage());
             return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
