@@ -1,14 +1,10 @@
 package com.manga.sakutalib.pages;
 
-import com.manga.sakutalib.database.entities.ChapterEntity;
-import com.manga.sakutalib.database.entities.MangaEntity;
-import com.manga.sakutalib.database.entities.MangaPageEntity;
-import com.manga.sakutalib.database.entities.VolumeEntity;
-import com.manga.sakutalib.database.repositories.ChapterRepository;
-import com.manga.sakutalib.database.repositories.MangaPageRepository;
-import com.manga.sakutalib.database.repositories.MangaRepository;
-import com.manga.sakutalib.database.repositories.VolumeRepository;
+import com.manga.sakutalib.accounts.exceptions.NoUserFoundException;
+import com.manga.sakutalib.database.entities.*;
+import com.manga.sakutalib.database.repositories.*;
 import com.manga.sakutalib.pages.exceptions.NoFoundMangaPageException;
+import com.manga.sakutalib.pages.requests.AddCommentToMangaPageRequest;
 import com.manga.sakutalib.pages.requests.GetMangaPageRequest;
 import com.manga.sakutalib.pages.requests.UploadMangaPageRequest;
 import com.manga.sakutalib.pages.responses.MangaPageCommentResponse;
@@ -17,7 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -27,13 +25,17 @@ public class MangaPageService {
     private final MangaRepository mangaRepository;
     private final VolumeRepository volumeRepository;
     private final ChapterRepository chapterRepository;
+    private final UserRepository userRepository;
+    private final MangaPageCommentRepository commentRepository;
 
     @Autowired
-    public MangaPageService(MangaPageRepository mangaPageRepository, MangaRepository mangaRepository, VolumeRepository volumeRepository, ChapterRepository chapterRepository) {
+    public MangaPageService(MangaPageRepository mangaPageRepository, MangaRepository mangaRepository, VolumeRepository volumeRepository, ChapterRepository chapterRepository, UserRepository userRepository, MangaPageCommentRepository commentRepository) {
         this.mangaPageRepository = mangaPageRepository;
         this.mangaRepository = mangaRepository;
         this.volumeRepository = volumeRepository;
         this.chapterRepository = chapterRepository;
+        this.userRepository = userRepository;
+        this.commentRepository = commentRepository;
     }
     public boolean UploadMangaPage(UploadMangaPageRequest mangaPageRequest) throws NoSuchElementException, Exception {
         try{
@@ -102,6 +104,32 @@ public class MangaPageService {
 
             return arr;
         }catch(Exception ex){
+            throw new Exception(ex);
+        }
+    }
+
+    public boolean AddCommentToMangaPage(AddCommentToMangaPageRequest commentRequest) throws Exception, NoUserFoundException, NoFoundMangaPageException {
+        try{
+            String formattedDate = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+
+            UserEntity user = userRepository.findByLogin(commentRequest.login);
+
+            if(user == null){
+                throw new NoUserFoundException("Can not find any users with this login ", commentRequest.login);
+            }
+
+            MangaPageEntity mangaPage = mangaPageRepository.findByPath("/home/yehor/Desktop/sakuta_lib/" + commentRequest.mangaPagePath);
+
+            if(mangaPage == null){
+                throw new NoFoundMangaPageException("Can not find any pages by presented path", commentRequest.mangaPagePath);
+            }
+
+            MangaPageCommentEntity newComment = new MangaPageCommentEntity(commentRequest.content, formattedDate, user, mangaPage);
+
+            commentRepository.save(newComment);
+
+            return true;
+        }catch (Exception ex){
             throw new Exception(ex);
         }
     }

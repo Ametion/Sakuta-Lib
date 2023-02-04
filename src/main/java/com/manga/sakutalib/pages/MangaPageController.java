@@ -1,6 +1,8 @@
 package com.manga.sakutalib.pages;
 
+import com.manga.sakutalib.accounts.exceptions.NoUserFoundException;
 import com.manga.sakutalib.pages.exceptions.NoFoundMangaPageException;
+import com.manga.sakutalib.pages.requests.AddCommentToMangaPageRequest;
 import com.manga.sakutalib.pages.requests.GetMangaPageRequest;
 import com.manga.sakutalib.pages.requests.UploadMangaPageRequest;
 import org.apache.logging.log4j.LogManager;
@@ -79,6 +81,22 @@ public class MangaPageController {
             LOGGER.warn("CAN NOT FIND MANGA PAGE BY PRESENTED PATH: " + path);
             return new ResponseEntity(noPage.getMessage(), HttpStatus.NOT_FOUND);
         } catch(Exception ex){
+            LOGGER.error("ERROR WHILE GETTING MANGA PAGE COMMENTS: \n" + ex.getMessage());
+            return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/comment")
+    public ResponseEntity AddCommentToMangaPage(@RequestBody AddCommentToMangaPageRequest commentRequest) {
+        try{
+            return new ResponseEntity(mangaPageService.AddCommentToMangaPage(commentRequest), HttpStatus.CREATED);
+        }catch (NoFoundMangaPageException noPage) {
+            LOGGER.warn("CAN NOT FIND MANGA PAGE BY PRESENTED PATH");
+            return new ResponseEntity(noPage.getMessage(), HttpStatus.NOT_FOUND);
+        } catch(NoUserFoundException noUser){
+            LOGGER.warn("Try to use non-existed user login: " + noUser.GetLogin());
+            return new ResponseEntity(noUser.getMessage(), HttpStatus.NOT_FOUND);
+        }  catch(Exception ex){
             LOGGER.error("ERROR WHILE GETTING MANGA PAGE COMMENTS: \n" + ex.getMessage());
             return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
