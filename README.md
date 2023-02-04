@@ -395,6 +395,24 @@
 
 #### You have query parameter "path", this parameter contains path to manga page.
 
+## Add Comment to Manga Page Route
+
+`POST /comment`
+
+### This route will add new comment to manga page, manga page is searching by path from body. Body for this request:
+
+```
+{
+    "login": "STRING",
+    "content": "STRING",
+    "mangaPagePath": "STRING"
+}
+```
+
+#### Field "login", contains login of user which is sending comment to manga page.
+#### Field "content", contains comment content, what will other users see in this comment.
+#### Field "mangaPagePath", contains path to manga page, its using for searching manga page in db to check is this page exist.
+
 # Manga Genres Routes
 
 ## Add Genre Route
